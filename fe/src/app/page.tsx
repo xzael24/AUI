@@ -24,6 +24,7 @@ import { ThemeToggleButton } from "@/components/ui/theme-toggle-button";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { HeroScrollDemo } from "@/components/function/HeroScrollDemo";
 import { InfiniteMovingCardsDemo } from "@/components/function/InfiniteMovingCardsDemo";
+import { Icon } from "@/components/function/Icon";
 
 export default function Home() {
   const [platformText, setPlatformText] = useState("Platforms");
@@ -79,25 +80,25 @@ export default function Home() {
   // Features data
   const features = [
     {
-      icon: <Calendar className="w-12 h-12 text-blue-500" />,
+      icon: <Calendar className="w-12 h-12 text-white-500" />,
       title: "Smart Scheduling",
       description:
         "Effortlessly plan tasks with our intelligent scheduling system that syncs with your calendar and prioritizes deadlines.",
     },
     {
-      icon: <CheckCircle className="w-12 h-12 text-green-500" />,
+      icon: <CheckCircle className="w-12 h-12 text-white-500" />,
       title: "Task Tracking",
       description:
         "Stay on top of your tasks with real-time progress tracking and automated reminders to keep you focused.",
     },
     {
-      icon: <Users className="w-12 h-12 text-purple-500" />,
+      icon: <Users className="w-12 h-12 text-white-500" />,
       title: "Team Collaboration",
       description:
         "Collaborate seamlessly with your team, assign tasks, share updates, and manage projects in one place.",
     },
     {
-      icon: <Zap className="w-12 h-12 text-yellow-500" />,
+      icon: <Zap className="w-12 h-12 text-white-500" />,
       title: "Quick Integrations",
       description:
         "Connect with your favorite tools like Slack, Google Drive, and more for a streamlined workflow.",
@@ -525,22 +526,5 @@ const Card = ({
         </p>
       </div>
     </div>
-  );
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Icon = ({ className, ...rest }: any) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth="1.5"
-      stroke="currentColor"
-      className={className}
-      {...rest}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
-    </svg>
   );
 };
