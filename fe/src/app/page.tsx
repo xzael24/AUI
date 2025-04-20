@@ -1,30 +1,29 @@
 "use client";
-import {
-  Navbar,
-  NavBody,
-  NavItems,
-  MobileNav,
-  NavbarLogo,
-  NavbarButton,
-  MobileNavHeader,
-  MobileNavToggle,
-  MobileNavMenu,
-} from "@/components/ui/resizable-navbar";
 import React, { useEffect, useState } from "react";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import { Calendar, CheckCircle, Users, Zap } from "lucide-react";
 import { Cover } from "@/components/ui/cover";
 import { AnimatePresence } from "framer-motion";
 import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
 import { ChevronDown } from "lucide-react";
-import { ThemeToggleButton } from "@/components/ui/theme-toggle-button";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { HeroScrollDemo } from "@/components/function/HeroScrollDemo";
 import { InfiniteMovingCardsDemo } from "@/components/function/InfiniteMovingCardsDemo";
 import { Icon } from "@/components/function/Icon";
+import {
+  Navbar,
+  NavBody,
+  NavbarLogo,
+  NavItems,
+  NavbarButton,
+  MobileNav,
+  MobileNavHeader,
+  MobileNavToggle,
+  MobileNavMenu
+} from "@/components/ui/navbar";
 
 export default function Home() {
   const [platformText, setPlatformText] = useState("Platforms");
@@ -64,6 +63,17 @@ export default function Home() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [scrollPosition, setScrollPosition] = useState(0);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
+  const { scrollY } = useScroll();
+  const [, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = scrollY.onChange((latest) => {
+      setHasScrolled(latest > 0);
+    });
+
+    return () => unsubscribe();
+  }, [scrollY]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -140,54 +150,63 @@ export default function Home() {
     <div className="relative w-full min-h-screen">
       <StarsBackground />
       <ShootingStars />
-      <Navbar>
-        {/* Desktop Navigation */}
-        <NavBody>
-          <NavbarLogo />
-          <NavItems items={navItems} />
-          <div className="flex items-center gap-4">
-            <ThemeToggleButton />
-            <NavbarButton variant="primary">Join</NavbarButton>
-          </div>
-        </NavBody>
-
-        {/* Mobile Navigation */}
-        <MobileNav>
-          <MobileNavHeader>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Navbar>
+          {/* Desktop Navigation */}
+          <NavBody>
             <NavbarLogo />
-            <MobileNavToggle
-              isOpen={isMobileMenuOpen}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            />
-          </MobileNavHeader>
-
-          <MobileNavMenu
-            isOpen={isMobileMenuOpen}
-            onClose={() => setIsMobileMenuOpen(false)}
-          >
-            {navItems.map((item, idx) => (
-              <a
-                key={`mobile-link-${idx}`}
-                href={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300"
-              >
-                <span className="block">{item.name}</span>
-              </a>
-            ))}
-            <div className="flex w-full flex-col items-center gap-4 mt-4">
-              <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
+            <NavItems items={navItems} />
+            <div className="flex items-center gap-4">
+              <NavbarButton 
                 variant="primary"
-                className="w-full max-w-xs"
+                className="hover:scale-105 transition-transform duration-200"
               >
                 Join
               </NavbarButton>
-              <ThemeToggleButton />
             </div>
-          </MobileNavMenu>
-        </MobileNav>
-      </Navbar>
+          </NavBody>
+
+          {/* Mobile Navigation */}
+          <MobileNav>
+            <MobileNavHeader>
+              <NavbarLogo />
+              <MobileNavToggle
+                isOpen={isMobileMenuOpen}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              />
+            </MobileNavHeader>
+
+            <MobileNavMenu
+              isOpen={isMobileMenuOpen}
+              onClose={() => setIsMobileMenuOpen(false)}
+            >
+              {navItems.map((item, idx) => (
+                <a
+                  key={`mobile-link-${idx}`}
+                  href={item.link}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="relative text-neutral-600 dark:text-neutral-300"
+                >
+                  <span className="block">{item.name}</span>
+                </a>
+              ))}
+              <div className="flex w-full flex-col items-center gap-4 mt-4">
+                <NavbarButton
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  variant="primary"
+                  className="w-full max-w-xs"
+                >
+                  Join
+                </NavbarButton>
+              </div>
+            </MobileNavMenu>
+          </MobileNav>
+        </Navbar>
+      </motion.div>
       <HeroScrollDemo />
 
       {/* Features Section */}
